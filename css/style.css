@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+/*======= Scroll bar =======*/
+::-webkit-scrollbar{
+    width: 11px;
+    background: var(--scroll-bar-color);
+  }
+  
+  ::-webkit-scrollbar-thumb{
+    width: 100%;
+    background: var(--scroll-thumb-color);
+    border-radius: 2em;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover{
+    background: var(--scroll-thumb-hover-color);
+  }
+
+  
+/* =========  Background =========== */
+img{
+    width: 100vw;
+    height: 100vh;
+}
+
+.image{
+    position: absolute;
+}
+
+section{
+    position: absolute;
+}
+
+/* =========== Form Componenets========= */
+section > h1{
+    font-family: 'Fascinate Inline', cursive;
+    font-size: 5rem;
+    line-height: 2;
+    margin-top: 20%;
+}
