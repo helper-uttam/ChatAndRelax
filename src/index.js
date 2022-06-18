@@ -22,12 +22,18 @@ app.use(express.static(publicDirectoryPath))
 //Database
 const client = new Client(process.env.DATABASE_URL);
 
+function insertData(ID, USERNAME, ROOM) {
+    const statement =  `INSERT INTO user VALUES (${USERNAME} ,${ROOM} )`
+    client.query(statement, () => {console.log('success');})
+}
+
+
 (async () => {
   try {
     await client.connect();
-    const results = await client.query("SELECT NOW()");
+    const results = await client.query("SELECT * FROM user");
     if(results){
-        console.log("Database Connected");
+        console.log("Database connected!");
     }
   } catch (err) {
     console.error("error executing query:", err);
@@ -41,11 +47,11 @@ io.on('connection', (socket) => {
 
     socket.on('join', (options, callback) => {
         const { error, user } = addUser({ id: socket.id, ...options })
+        insertData(2, user.username, user.room);
 
         if (error) {
             return callback(error)
         }
-
 
         socket.join(user.room)
         
