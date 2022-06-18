@@ -73,17 +73,16 @@ document.querySelector('#email').addEventListener('input', (e) => {
 //on click
 document.getElementById('sendInvite').addEventListener('click', async() => {
 
-    // const response = await fetch('/invite', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json'
-    //                 },
-    //                 body: JSON.stringify({
-    //                     invite: `https://chatandrelax.herokuapp.com/chat.html?username=invitedUser&room=${room}`,
-    //                     email: email
-    //                 })
-    //         })
-    // console.log(response);
+    const response = await fetch('/invite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        invite: `https://chatandrelax.herokuapp.com/chat.html?username=invitedUser&room=${room}`,
+                        email: email
+                    })
+            })
     document.getElementById('sendInvite').setAttribute('disabled', true)
 })
 
