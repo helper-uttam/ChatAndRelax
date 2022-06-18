@@ -1,9 +1,12 @@
 const path = require('path')
 const http = require('http')
+const sgMail = require('@sendgrid/mail');
 const express = require('express')
 const socketio = require('socket.io')
 const Filter = require('bad-words')
+const cors = require('cors')
 const { Client } = require("pg");
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config()
 
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
@@ -18,6 +21,10 @@ const port = process.env.PORT || 3000
 const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 //Database
 const client = new Client(process.env.DATABASE_URL);
@@ -31,7 +38,7 @@ function insertData(ID, USERNAME, ROOM) {
 (async () => {
   try {
     await client.connect();
-    const results = await client.query("SELECT * FROM user");
+    const results = await client.query("");
     if(results){
         console.log("Database connected!");
     }
@@ -47,7 +54,7 @@ io.on('connection', (socket) => {
 
     socket.on('join', (options, callback) => {
         const { error, user } = addUser({ id: socket.id, ...options })
-        insertData(2, user.username, user.room);
+        // insertData(2, user.username, user.room);
 
         if (error) {
             return callback(error)
@@ -96,6 +103,46 @@ io.on('connection', (socket) => {
     })
 })
 
+// sending invites
+function sendEmail(email, invite) {
+    if (email.length < 6) {
+        return alert("check the mail you have entered!")
+    }
+
+    const SECRET_KEY = `${process.env.SENDGRID_API_KEY}`;
+    sgMail.setApiKey(SECRET_KEY);
+    const mail = String(process.env.MAIL);
+    const msg = {
+        to: email,
+        from: mail, 
+        subject: "Your friend invited you to join the conversation",
+        html: `<strong>Hi there, Thanks for using ChatAndRelax. Your friend is waiting in the lobby and here is the <a href=${invite}>link</a> to join</strong>`,
+    };
+    sgMail
+    .send(msg)
+    .then(() => {}, error => {
+        console.error(error);
+
+        if (error.response) {
+        console.error(error.response.body)
+        }
+    });
+    (async () => {
+        try {
+        await sgMail.send(msg);
+        } catch (error) {
+        console.error(error);
+    
+        if (error.response) {
+            console.error(error.response.body)
+        }
+        }
+    })();
+}
+app.post('/invite', (req, res) => {
+    sendEmail(req.body.email, req.body.invite)
+    res.send("Email sent!")
+})
 server.listen(port, () => {
     console.log(`Server is up on port ${port}!`)
 })

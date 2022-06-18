@@ -41,6 +41,10 @@ const autoscroll = () => {
 var audio;
 var mood;
 
+if(window.innerWidth < 1200){
+    document.querySelector('#music').style.display = 'none'
+}
+
 function playAudio(mood) {
     if (mood.toLowerCase() == 'alone'|| mood.toLowerCase() == 'broken') {
         audio = new Audio('../img/Alone.mp3');
@@ -58,6 +62,30 @@ function pauseAudio() {
     if(audio)
         audio.pause();
 }
+
+let email = "";
+
+// to take input
+document.querySelector('#email').addEventListener('input', (e) => {
+    email = e.target.value;
+    document.getElementById('sendInvite').removeAttribute('disabled')
+})
+//on click
+document.getElementById('sendInvite').addEventListener('click', async() => {
+
+    // const response = await fetch('/invite', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //                 body: JSON.stringify({
+    //                     invite: `https://chatandrelax.herokuapp.com/chat.html?username=invitedUser&room=${room}`,
+    //                     email: email
+    //                 })
+    //         })
+    // console.log(response);
+    document.getElementById('sendInvite').setAttribute('disabled', true)
+})
 
 let pause = false;
 

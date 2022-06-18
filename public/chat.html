@@ -2,18 +2,22 @@
 <html>
 
 <head>
-    <title>Chat App</title>
+    <title>ChatAndRelax</title>
     <link rel="icon" href="/img/favicon.png">
     <link rel="stylesheet" href="/css/styles.min.css">
 </head>
 
 <body>
     <div class="chat">
-        <div id="sidebar" class="chat__sidebar">
-
-        </div>
+        <!-- Side Bar -->
+        <div id="sidebar" class="chat__sidebar"></div>
         <div class="chat__main">
             <div id="music">🎶</div>
+            <div id="notification_system">
+                Invite your friend to this conversation
+                <input type="email" id="email" placeholder="email">
+                <button id="sendInvite">Send Link</button>
+            </div>
             <div id="messages" class="chat__messages"></div>
 
             <div class="compose" style="padding: 2%; box-shadow: 4px 2px 4px 2px;">
