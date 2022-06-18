@@ -6,6 +6,7 @@
 - CSS3
 - JavaScript
 - NodeJS
+- SendGrid
 - Socket.io
 - Heroku CI/CD deployment
 
