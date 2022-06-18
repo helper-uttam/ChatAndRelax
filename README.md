@@ -31,5 +31,5 @@ npm install
 ```
 - Now you're ready to spin your localserver, by just running
 ```
-npm start
+npm run dev
 ```
