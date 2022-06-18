@@ -14,7 +14,7 @@ const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
-    console.log(Qs.parse(location.search, { ignoreQueryPrefix: true }));
+
 const autoscroll = () => {
     // New message element
     const $newMessage = $messages.lastElementChild
@@ -38,8 +38,43 @@ const autoscroll = () => {
     }
 }
 
+var audio;
+var mood;
+
+function playAudio(mood) {
+    if (mood.toLowerCase() == 'alone'|| mood.toLowerCase() == 'broken') {
+        audio = new Audio('../img/Alone.mp3');
+        audio.play();
+    }else if(mood.toLowerCase() == 'happy'|| mood.toLowerCase() == 'excited'){
+        audio = new Audio('../img/Happy.mp3');
+        audio.play();
+    }else{
+        audio = new Audio('../img/Sad.mp3');
+        audio.play();
+    }
+}
+
+function pauseAudio() {
+    if(audio)
+        audio.pause();
+}
+
+let pause = false;
+
+// pause or play misuc on click
+document.querySelector('#music').addEventListener('click', () => {
+    pause = !pause;
+    if(pause){
+        pauseAudio();
+    }
+    else{
+        playAudio(mood);
+    }
+})
+
 socket.on('message', (message) => {
     console.log(message)
+    mood = room;
     const html = Mustache.render(messageTemplate, {
         username: message.username,
         message: message.text,

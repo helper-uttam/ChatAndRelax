@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
             return callback(error)
         }
 
+
         socket.join(user.room)
         
         socket.emit('message', generateMessage('ChatAndRelax bot', 'Welcome!'))
