@@ -3,6 +3,9 @@ const http = require('http')
 const express = require('express')
 const socketio = require('socket.io')
 const Filter = require('bad-words')
+const { Client } = require("pg");
+const dotenv = require('dotenv').config()
+
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
 
@@ -10,10 +13,28 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
+
 const port = process.env.PORT || 3000
 const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
+
+//Database
+const client = new Client(process.env.DATABASE_URL);
+
+(async () => {
+  try {
+    await client.connect();
+    const results = await client.query("SELECT NOW()");
+    if(results){
+        console.log("Database Connected");
+    }
+  } catch (err) {
+    console.error("error executing query:", err);
+  } finally {
+    client.end();
+  }
+})();
 
 io.on('connection', (socket) => {
     console.log('New WebSocket connection')
