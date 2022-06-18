@@ -7,6 +7,7 @@
 - JavaScript
 - NodeJS
 - Socket.io
+- Heroku CI/CD deployment
 
 ## Inspiration
 The inspiration I got for this application is from the theme of the [hackathon](https://mentalhealthhacksii.devpost.com). Whenever we feel low or our mental condition is not good, we want someone with whom we can share our stuff to feel relaxed.
